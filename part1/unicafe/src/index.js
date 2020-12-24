@@ -10,6 +10,14 @@ const Button = ({handleClick, text}) => (
 const Feedback = ({text1, countOrNum, text2}) => <p>{text1} {countOrNum} {text2}</p>
 
 const Statistics = ({countOrNum1, countOrNum2, countOrNum3, countOrNum4, countOrNum5, countOrNum6}) => {
+  if(countOrNum1 === 0 && countOrNum2 === 0 && countOrNum3 === 0){
+    return(
+      <div>
+        "No feedback given"
+      </div>
+    )
+  }
+
   return (
     <div>
       <Feedback text1= "good" countOrNum= {countOrNum1} text2= ""/>
