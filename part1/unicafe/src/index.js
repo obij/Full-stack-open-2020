@@ -9,6 +9,19 @@ const Button = ({handleClick, text}) => (
 
 const Feedback = ({text1, countOrNum, text2}) => <p>{text1} {countOrNum} {text2}</p>
 
+const Statistics = ({countOrNum1, countOrNum2, countOrNum3, countOrNum4, countOrNum5, countOrNum6}) => {
+  return (
+    <div>
+      <Feedback text1= "good" countOrNum= {countOrNum1} text2= ""/>
+      <Feedback text1= "neutral" countOrNum= {countOrNum2} text2= ""/>
+      <Feedback text1= "bad" countOrNum= {countOrNum3} text2= ""/>
+      <Feedback text1= "all" countOrNum= {countOrNum4} />
+      <Feedback text1= "average" countOrNum= {countOrNum5} text2= "" />
+      <Feedback text1= "positive" countOrNum= {countOrNum6} text2= "%" />
+    </div>
+  )
+}
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -28,12 +41,7 @@ const App = () => {
       <Button handleClick ={() => incNeutral(neutral + 1)} text= "neutral" />
       <Button handleClick ={() => incBad(bad + 1)} text= "bad" />
       <Display text= "statistics" />
-      <Feedback text1= "good" countOrNum= {good} text2= ""/>
-      <Feedback text1= "neutral" countOrNum= {neutral} text2= ""/>
-      <Feedback text1= "bad" countOrNum= {bad} text2= ""/>
-      <Feedback text1= "all" countOrNum= {good + neutral + bad} />
-      <Feedback text1= "average" countOrNum= {calcAverage()} text2= "" />
-      <Feedback text1= "positive" countOrNum= {calcPositive()} text2= "%" />
+      <Statistics countOrNum1= {good} countOrNum2= {neutral} countOrNum3= {bad} countOrNum4= {good + neutral + bad} countOrNum5= {calcAverage()} countOrNum6= {calcPositive()} />
     </div>
   )
 }
