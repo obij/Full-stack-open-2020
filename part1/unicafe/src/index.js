@@ -7,27 +7,50 @@ const Button = ({handleClick, text}) => (
   <button onClick= {handleClick}>{text}</button>
 )
 
-const Statistic = ({text1, countOrNum, text2}) => <p>{text1} {countOrNum} {text2}</p>
 
-const Statistics = ({countOrNum1, countOrNum2, countOrNum3, countOrNum4, countOrNum5, countOrNum6}) => {
+
+const Table =({countOrNum1, countOrNum2, countOrNum3, countOrNum4, countOrNum5, countOrNum6}) => {
   if(countOrNum1 === 0 && countOrNum2 === 0 && countOrNum3 === 0){
     return(
       <div>
-        "No feedback given"
+        No feedback given
       </div>
     )
   }
 
-  return (
+  return(
     <div>
-      <Statistic text1= "good" countOrNum= {countOrNum1} text2= ""/>
-      <Statistic text1= "neutral" countOrNum= {countOrNum2} text2= ""/>
-      <Statistic text1= "bad" countOrNum= {countOrNum3} text2= ""/>
-      <Statistic text1= "all" countOrNum= {countOrNum4} text2= "" />
-      <Statistic text1= "average" countOrNum= {countOrNum5} text2= "" />
-      <Statistic text1= "positive" countOrNum= {countOrNum6} text2= "%" />
+      <table>
+       <thead>
+        <tr>
+          <td>good</td>
+          <td>{countOrNum1}</td>
+        </tr>
+        <tr>
+          <td>neutral</td>
+          <td>{countOrNum2}</td>
+        </tr>
+        <tr>
+          <td>bad</td>
+          <td>{countOrNum3}</td>
+        </tr>
+        <tr>
+          <td>all</td>
+          <td>{countOrNum4}</td>
+        </tr>
+        <tr>
+          <td>average</td>
+          <td>{countOrNum5}</td>
+        </tr>
+        <tr>
+          <td>positive</td>
+          <td>{countOrNum6}%</td>
+        </tr>
+       </thead>
+      </table>
     </div>
   )
+
 }
 
 const App = () => {
@@ -49,7 +72,7 @@ const App = () => {
       <Button handleClick ={() => incNeutral(neutral + 1)} text= "neutral" />
       <Button handleClick ={() => incBad(bad + 1)} text= "bad" />
       <Display text= "statistics" />
-      <Statistics countOrNum1= {good} countOrNum2= {neutral} countOrNum3= {bad} countOrNum4= {good + neutral + bad} countOrNum5= {calcAverage()} countOrNum6= {calcPositive()} />
+      <Table countOrNum1= {good} countOrNum2= {neutral} countOrNum3= {bad} countOrNum4= {good + neutral + bad} countOrNum5= {calcAverage()} countOrNum6= {calcPositive()} />
     </div>
   )
 }
