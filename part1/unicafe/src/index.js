@@ -7,7 +7,7 @@ const Button = ({handleClick, text}) => (
   <button onClick= {handleClick}>{text}</button>
 )
 
-const Feedback = ({text1, countOrNum, text2}) => <p>{text1} {countOrNum} {text2}</p>
+const Statistic = ({text1, countOrNum, text2}) => <p>{text1} {countOrNum} {text2}</p>
 
 const Statistics = ({countOrNum1, countOrNum2, countOrNum3, countOrNum4, countOrNum5, countOrNum6}) => {
   if(countOrNum1 === 0 && countOrNum2 === 0 && countOrNum3 === 0){
@@ -20,12 +20,12 @@ const Statistics = ({countOrNum1, countOrNum2, countOrNum3, countOrNum4, countOr
 
   return (
     <div>
-      <Feedback text1= "good" countOrNum= {countOrNum1} text2= ""/>
-      <Feedback text1= "neutral" countOrNum= {countOrNum2} text2= ""/>
-      <Feedback text1= "bad" countOrNum= {countOrNum3} text2= ""/>
-      <Feedback text1= "all" countOrNum= {countOrNum4} />
-      <Feedback text1= "average" countOrNum= {countOrNum5} text2= "" />
-      <Feedback text1= "positive" countOrNum= {countOrNum6} text2= "%" />
+      <Statistic text1= "good" countOrNum= {countOrNum1} text2= ""/>
+      <Statistic text1= "neutral" countOrNum= {countOrNum2} text2= ""/>
+      <Statistic text1= "bad" countOrNum= {countOrNum3} text2= ""/>
+      <Statistic text1= "all" countOrNum= {countOrNum4} text2= "" />
+      <Statistic text1= "average" countOrNum= {countOrNum5} text2= "" />
+      <Statistic text1= "positive" countOrNum= {countOrNum6} text2= "%" />
     </div>
   )
 }
