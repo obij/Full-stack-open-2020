@@ -7,8 +7,24 @@ const Button = ({handleClick, text}) =>{
     <button onClick= {handleClick}>{text}</button>
   )
 }
+
+const Display= ({text1, text2, text3}) => {
+  return(
+    <div>{text1} {text2} {text3} </div>
+  )
+}
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes]= useState([0,0,0,0,0,0])
+
+  const incVote = () => {
+    const copy = [...votes];
+    copy[selected] += 1;
+    setVotes(copy);
+  }
+
+  const dispVote = () => votes[selected]
 
   const getRandomInt = (min, max) =>{
     min= Math.ceil(min);
@@ -24,6 +40,8 @@ const App = (props) => {
   return (
     <div>
       {props.anecdotes[selected]}
+      <Display text1= "has" text2= {dispVote()} text3= "votes" />
+      <Button handleClick= {incVote} text= "vote" />
       <Button handleClick= {handleClick} text= "next anecdote" />
     </div>
   )
