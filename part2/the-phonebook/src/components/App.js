@@ -9,8 +9,19 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
 
   const handleNameChange = (event) => {
-      console.log(event.target.value);
+      //console.log(event.target.value);
       setNewName(event.target.value);
+  }
+
+  const containsObj =(arr, obj) => {
+      let found = false;
+      for(let i= 0; i < arr.length; i++){
+          if(arr[i].name === obj.name){
+              found = true;
+              return found;
+          }
+      }
+      return found;
   }
 
   const addName = (event) => {
@@ -18,7 +29,13 @@ const App = () => {
       const nameObject = {
           name: newName
       }
-      setPersons(persons.concat(nameObject));
+
+     if(containsObj(persons, nameObject)){
+          console.log("includes object");
+          alert(`${newName} is already added to phonebook`)
+      }else{
+          setPersons(persons.concat(nameObject));
+      }
       setNewName("");
   }
 
