@@ -14,9 +14,48 @@ const Display= ({text1, text2, text3}) => {
   )
 }
 
+const Title = ({text}) => <h1>{text}</h1>
+
+const MostVotes = ({anecdotes, mostVotesIndex, text1, text2, text3, votes, text4}) => {
+  if(votes[0] === 0 && votes[1] === 0 && votes[2] === 0 && votes[3] === 0 && votes[4] === 0 && votes[5] === 0){
+    return(
+      <div>No anecdote with most votes yet</div>
+    )
+  }
+
+  return (
+    <div>
+      <Display text1= {anecdotes[mostVotesIndex]} text2= {text1} text3= {text2} />
+      <Display text1= {text3} text2= {votes[mostVotesIndex]} text3= {text4} />
+    </div>
+  )
+}
+
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes]= useState([0,0,0,0,0,0])
+
+ 
+  const indexOfMax = (arr) => {
+    if(arr.length === 0){
+      return -1;
+    }
+
+    let max= arr[0];
+    let maxIndex = 0;
+
+    for (let i= 1; i < arr.length; i++){
+      if(arr[i] > max){
+        maxIndex = 1;
+        max= arr[i];
+      }
+    }
+
+    return maxIndex;
+  }
+
+  const mostVotesIndex = () => indexOfMax(votes)
 
   const incVote = () => {
     const copy = [...votes];
@@ -39,10 +78,13 @@ const App = (props) => {
 
   return (
     <div>
+      <Title text= "Anecdote of the day" />
       {props.anecdotes[selected]}
       <Display text1= "has" text2= {dispVote()} text3= "votes" />
       <Button handleClick= {incVote} text= "vote" />
       <Button handleClick= {handleClick} text= "next anecdote" />
+      <Title text= "Anecdote with most votes" />
+      <MostVotes anecdotes= {anecdotes} mostVotesIndex= {mostVotesIndex()} text1= "" text2= "" text3= "has" votes= {votes} text4= "votes" />
     </div>
   )
 }
