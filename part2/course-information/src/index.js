@@ -7,11 +7,16 @@ const Header = ({ course }) => {
   )
 }
 
-const Total = ({ course }) => {
-  const sum = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
+
+const Total = ({text1, course, text2}) => {
+  const total= course.parts.reduce((accumulator, currentValue) => 
+     accumulator + currentValue.exercises, 0)
+
   return(
-    <p>Number of exercises {sum}</p>
-  ) 
+    <div>
+      {text1} {total} {text2}
+    </div>
+  )
 }
 
 const Part = (props) => {
@@ -69,7 +74,12 @@ const App = () => {
     ]
   }
 
-  return <Course course={course} />
+  return(
+    <div>
+      <Course course={course} />
+      <Total text1= "total of " course={course} text2= "exercises" />
+    </div>
+  ) 
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
