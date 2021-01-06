@@ -4,10 +4,32 @@ const Person = ({person}) => <li>{person.name} {person.number}</li>
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    {name: 'Arto Hellas', number: "040-1234567"}
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
   const [ newName, setNewName ] = useState("")
   const [newNumber, setNewNumber] = useState("")
+  const [filteredNameArr, setFilteredNameArr]= useState(0);
+  const [filteredName, setFilteredName]= useState("");
+
+  const handleNameFilter = (event) => {
+      setFilteredName(event.target.value);
+
+      let r = "^";
+      //r += filteredName.toUpperCase();
+      r += event.target.value.toUpperCase();
+      let reg = new RegExp(r);
+      //console.log(reg);
+      setFilteredNameArr(persons.filter(person => reg.test(person.name.toUpperCase())))
+      //console.log(filteredNameArr);
+
+      //if(filteredName === ""){
+          //setFilteredNameArr(0)
+          //reg = / /;
+      //}
+  }
 
   const handleNumberChange = (event) => {
       //console.log(event.target.value);
@@ -45,30 +67,39 @@ const App = () => {
       }
       setNewName("");
       setNewNumber("");
+      setFilteredNameArr(0);
+      setFilteredName("")
   }
-
-  return (
+ 
+  //console.log(filteredNameArr);
+ return(
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit= {addName}>
-        <div>
-          name: <input value={newName} onChange= {handleNameChange} />
-        </div>
-        <div>
-            number: <input value= {newNumber} onChange= {handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-       <ul>
-           {persons.map(person =>
-              <Person key= {person.name} person= {person} />
-           )}
-       </ul>
+    <h2>Phonebook</h2>
+    <div>
+        filter names with: <input value= {filteredName} onChange= {handleNameFilter} />
     </div>
-  )
+    <form onSubmit= {addName}>
+      <div>
+        name: <input value={newName} onChange= {handleNameChange} />
+      </div>
+      <div>
+          number: <input value= {newNumber} onChange= {handleNumberChange} />
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+    <h2>Numbers</h2>
+     <ul>
+         { filteredNameArr === 0
+         ? persons.map(person => <Person key= {person.name} person= {person} />)
+         : filteredNameArr.map(person => <Person key= {person.name} person= {person} />)
+         }
+        
+     </ul>
+</div>   
+      
+ )   
 }
 
 export default App
