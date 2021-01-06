@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import Filter from '../components/Filter'
+import PersonForm from '../components/PersonForm'
+import Persons from '../components/Persons'
 
-const Person = ({person}) => <li>{person.name} {person.number}</li>
+
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -72,34 +75,19 @@ const App = () => {
   }
  
   //console.log(filteredNameArr);
+
+ 
  return(
-    <div>
-    <h2>Phonebook</h2>
-    <div>
-        filter names with: <input value= {filteredName} onChange= {handleNameFilter} />
-    </div>
-    <form onSubmit= {addName}>
-      <div>
-        name: <input value={newName} onChange= {handleNameChange} />
-      </div>
-      <div>
-          number: <input value= {newNumber} onChange= {handleNumberChange} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-    <h2>Numbers</h2>
-     <ul>
-         { filteredNameArr === 0
-         ? persons.map(person => <Person key= {person.name} person= {person} />)
-         : filteredNameArr.map(person => <Person key= {person.name} person= {person} />)
-         }
-        
-     </ul>
-</div>   
-      
- )   
+     <div>
+         <h2>Phonebook</h2>
+         <Filter text= "Filter names with: " value= {filteredName} onChange= {handleNameFilter} />
+         <h3>Add a new</h3>
+         <PersonForm addName= {addName} text1= "name: " value1= {newName} onChange1= {handleNameChange} text2= "number: " value2= {newNumber} onChange2= {handleNumberChange} />
+         <h3>Numbers</h3>
+         <Persons filteredNameArr= {filteredNameArr} persons= {persons} />
+     </div>
+
+ )
 }
 
 export default App
