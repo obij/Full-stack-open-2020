@@ -9,12 +9,13 @@ const Input = ({text, value, onChange}) => {
     )
 }
 
-const Display = ({filteredCountries}) =>{
-    console.log(filteredCountries.length);
-    if(filteredCountries.length === 1){
-        console.log(filteredCountries);
-    }
-    if(filteredCountries.length > 10){
+const Display = ({filteredCountries}) => {
+    if (filteredCountries === 0){
+        return (
+            <div></div>
+        )
+            
+    }else if(filteredCountries.length > 10){
         return(
             <div>Too many matches, specify another filter</div>
         )
@@ -40,6 +41,7 @@ const Display = ({filteredCountries}) =>{
             </div>
         )
     }
+    
 }
 
 const List = ({arr}) => {
@@ -60,7 +62,7 @@ const Country =({item}) => <li>{item["name"]}</li>
 const App = () => {
     const[searchItem, setSearchItem] = useState('');
     const [countries, setCountries] = useState([]);
-    const [filteredCountries, setFilteredCountries] = useState([]);
+    const [filteredCountries, setFilteredCountries] = useState(0);
 
     useEffect(() => {
         console.log('effect')
