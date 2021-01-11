@@ -10,12 +10,17 @@ const Input = ({text, value, onChange}) => {
 }
 
 const Display = ({filteredCountries}) => {
-    if (filteredCountries === 0){
-        return (
-            <div></div>
-        )
+    //if (filteredCountries === 0){
+        //return (
+            //<div></div>
+        //)
+
+      
             
-    }else if(filteredCountries.length > 10){
+   if(filteredCountries.length > 10){
+        console.log("filteredCountries length ia " + filteredCountries.length);
+        //setFilteredCountries(0);
+        filteredCountries = [];
         return(
             <div>Too many matches, specify another filter</div>
         )
@@ -28,7 +33,7 @@ const Display = ({filteredCountries}) => {
         )
 
     }else if(filteredCountries.length === 1){
-        console.log("one");
+        //console.log("one");
         console.log(filteredCountries);
         return(
             <div>
@@ -39,6 +44,10 @@ const Display = ({filteredCountries}) => {
                    <List arr= {filteredCountries[0]["languages"]} />
                    <img src = {filteredCountries[0]["flag"]} width="200" height="200" alt= "The flag of a country" ></img>
             </div>
+        )
+    }else{
+        return(
+            <div></div>
         )
     }
     
@@ -62,7 +71,16 @@ const Country =({item}) => <li>{item["name"]}</li>
 const App = () => {
     const[searchItem, setSearchItem] = useState('');
     const [countries, setCountries] = useState([]);
-    const [filteredCountries, setFilteredCountries] = useState(0);
+    //const [filteredCountries, setFilteredCountries] = useState([]);
+    //const filteredCountries = 0
+    //;
+
+    const filteredCountries= countries.filter(country => {
+        const reg= new RegExp(searchItem.toUpperCase());
+        //console.log(reg)
+        return reg.test(country["name"].toUpperCase())
+    })
+    
 
     useEffect(() => {
         console.log('effect')
@@ -76,17 +94,20 @@ const App = () => {
     console.log('render', countries.length, 'countries');
 
     const handleSearchItemFilter = (event) => {
-        console.log(event.target.value);
+        //console.log(event.target.value);
         setSearchItem(event.target.value);
-
-        const reg= new RegExp(event.target.value.toUpperCase());
-        setFilteredCountries(countries.filter(country => reg.test(country["name"].toUpperCase())))
+        //const reg= new RegExp(event.target.value.toUpperCase());
+        //const reg= new RegExp(searchItem.toUpperCase());
+        //onsole.log("reg is" + reg);
+        //setFilteredCountries(countries.filter(country => reg.test(country["name"].toUpperCase())))
+        //setSearchItem("");
+        console.log(searchItem);
     }
 
     return (
         <div>
            <Input text= "find countries"  value= {searchItem} onChange= {handleSearchItemFilter} />
-           <Display filteredCountries= {filteredCountries} />
+           {searchItem === '' ? null :<Display filteredCountries= {filteredCountries} /> }
         </div>
     )
 }
