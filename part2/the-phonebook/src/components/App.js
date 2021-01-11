@@ -11,7 +11,7 @@ const App = () => {
   const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState("")
   const [newNumber, setNewNumber] = useState("")
-  const [filteredNameArr, setFilteredNameArr]= useState(0);
+  //const [filteredNameArr, setFilteredNameArr]= useState(0);
   const [filteredName, setFilteredName]= useState("");
   
   useEffect(() =>{
@@ -25,21 +25,15 @@ const App = () => {
   }, [])
   console.log('render', persons.length, 'persons');
 
+  const filteredNameArr = persons.filter(person => {
+      let r= "^";
+      r += filteredName.toUpperCase();
+      let reg = new RegExp(r);
+      return reg.test(person.name.toUpperCase());
+  })
+
   const handleNameFilter = (event) => {
       setFilteredName(event.target.value);
-
-      let r = "^";
-      //r += filteredName.toUpperCase();
-      r += event.target.value.toUpperCase();
-      let reg = new RegExp(r);
-      //console.log(reg);
-      setFilteredNameArr(persons.filter(person => reg.test(person.name.toUpperCase())))
-      //console.log(filteredNameArr);
-
-      //if(filteredName === ""){
-          //setFilteredNameArr(0)
-          //reg = / /;
-      //}
   }
 
   const handleNumberChange = (event) => {
@@ -92,7 +86,7 @@ const App = () => {
          <h3>Add a new</h3>
          <PersonForm addName= {addName} text1= "name: " value1= {newName} onChange1= {handleNameChange} text2= "number: " value2= {newNumber} onChange2= {handleNumberChange} />
          <h3>Numbers</h3>
-         <Persons filteredNameArr= {filteredNameArr} persons= {persons} />
+         <Persons filteredNameArr= {filteredNameArr} persons= {persons} filteredName= {filteredName}/>
      </div>
 
  )

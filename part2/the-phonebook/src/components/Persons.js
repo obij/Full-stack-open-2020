@@ -1,11 +1,11 @@
 import React from 'react'
 import Person from '../components/Person'
 
-const Persons = ({filteredNameArr, persons}) => {
+const Persons = ({filteredNameArr, persons, filteredName}) => {
     return (
         <div>
             <ul>
-               { filteredNameArr === 0
+               { filteredName === ""
                  ? persons.map(person => <Person key= {person.name} person= {person} />)
                  : filteredNameArr.map(person => <Person key= {person.name} person= {person} />)
                }
