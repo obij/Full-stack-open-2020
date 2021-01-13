@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from '../components/Filter'
 import PersonForm from '../components/PersonForm'
 import Persons from '../components/Persons'
+import noteService from '../services/notes'
 
 
 
@@ -15,15 +15,15 @@ const App = () => {
   const [filteredName, setFilteredName]= useState("");
   
   useEffect(() =>{
-      console.log('effect')
-      axios
-          .get('http://localhost:3001/persons')
-          .then(response => {
-              console.log('promise fulfilled');
-              setPersons(response.data)
+      //console.log('effect')
+      noteService
+          .getAll()
+          .then(initialPersons => {
+              //console.log('promise fulfilled');
+              setPersons(initialPersons)
           })
   }, [])
-  console.log('render', persons.length, 'persons');
+  //console.log('render', persons.length, 'persons');
 
   const filteredNameArr = persons.filter(person => {
       let r= "^";
@@ -69,10 +69,10 @@ const App = () => {
           alert(`${newName} is already added to phonebook`)
       }else{
          // setPersons(persons.concat(nameObject));
-         axios
-            .post('http://localhost:3001/persons', nameObject)
-            .then(response => {
-                setPersons(persons.concat(response.data));
+         noteService
+            .create(nameObject)
+            .then(returnedPerson => {
+                setPersons(persons.concat(returnedPerson));
             })
       }
       setNewName("");
