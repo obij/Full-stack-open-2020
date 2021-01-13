@@ -49,13 +49,25 @@ const App = () => {
   const containsObj =(arr, obj) => {
       let found = false;
       for(let i= 0; i < arr.length; i++){
-          if(arr[i].name === obj.name){
+          if(arr[i].name === obj.name && arr[i].number === obj.number){
               found = true;
               return found;
           }
       }
       return found;
   }
+
+  const containsObjWithDiffNo =(arr, obj) => {
+    let found = false;
+    for(let i= 0; i < arr.length; i++){
+        if(arr[i].name === obj.name && arr[i].number !== obj.number){
+            found = true;
+            return found;
+        }
+    }
+    return found;
+}
+
 
   const addName = (event) => {
       event.preventDefault();
@@ -66,18 +78,48 @@ const App = () => {
 
      if(containsObj(persons, nameObject)){
           //console.log("includes object");
-          alert(`${newName} is already added to phonebook`)
+          alert(`${newName} with number ${newNumber}  already added to phonebook`)
+
+     }else if(containsObjWithDiffNo(persons, nameObject)){
+        if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+            const samePersonWithDiffNo=  persons.find(p => p.name === nameObject.name && p.number !== nameObject.number);
+            const changedPerson = {...samePersonWithDiffNo, number: nameObject.number};
+            noteService
+                .update(samePersonWithDiffNo.id, changedPerson)
+                .then(returnedPerson => {
+                    setPersons(persons.map(person => 
+                       person.id !== samePersonWithDiffNo.id ? person : returnedPerson))
+                })
+                .catch(error => {
+                    alert(`The person '${samePersonWithDiffNo.name}' was already deleted from server`)
+                    setPersons(persons.filter(n =>
+                       n.id !== samePersonWithDiffNo.id))
+                })
+        }
+
       }else{
          // setPersons(persons.concat(nameObject));
          noteService
-            .create(nameObject)
-            .then(returnedPerson => {
-                setPersons(persons.concat(returnedPerson));
-            })
-      }
+         .create(nameObject)
+         .then(returnedPerson => {
+             setPersons(persons.concat(returnedPerson));
+         })
+     }
       setNewName("");
       setNewNumber("");
       setFilteredName("")
+  }
+
+  const deletePersonObject = (id, name) => {
+      if(window.confirm(`Delete ${name}`)){
+          const deletedPerson = persons.find(p => p.id=== id)
+
+          noteService
+             .updateDelete(id, deletedPerson)
+             .then(returnedPerson => {
+                 setPersons(persons.filter (person => person.id !== returnedPerson.id))
+             })
+      }
   }
  
   //console.log(filteredNameArr);
@@ -90,7 +132,7 @@ const App = () => {
          <h3>Add a new</h3>
          <PersonForm addName= {addName} text1= "name: " value1= {newName} onChange1= {handleNameChange} text2= "number: " value2= {newNumber} onChange2= {handleNumberChange} />
          <h3>Numbers</h3>
-         <Persons filteredNameArr= {filteredNameArr} persons= {persons} filteredName= {filteredName}/>
+         <Persons filteredNameArr= {filteredNameArr} persons= {persons} filteredName= {filteredName} deletePersonObject ={deletePersonObject}/>
      </div>
 
  )
