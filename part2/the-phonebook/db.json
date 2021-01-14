@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Dan Abramov",
-      "number": "12-789999971",
-      "id": 3
-    },
-    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
@@ -14,16 +9,6 @@
       "name": "James Dyson",
       "number": "123-234567",
       "id": 5
-    },
-    {
-      "name": "Kevin Keegan",
-      "number": "234-899976",
-      "id": 6
-    },
-    {
-      "name": "Larry Holmes",
-      "number": "1235555",
-      "id": 7
     }
   ]
 }
