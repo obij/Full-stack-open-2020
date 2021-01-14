@@ -3,6 +3,7 @@ import Filter from '../components/Filter'
 import PersonForm from '../components/PersonForm'
 import Persons from '../components/Persons'
 import noteService from '../services/notes'
+import Notification from '../components/Notification'
 
 
 
@@ -11,8 +12,8 @@ const App = () => {
   const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState("")
   const [newNumber, setNewNumber] = useState("")
-  //const [filteredNameArr, setFilteredNameArr]= useState(0);
   const [filteredName, setFilteredName]= useState("");
+  const [notification, setNotification] = useState("")
   
   useEffect(() =>{
       //console.log('effect')
@@ -89,9 +90,13 @@ const App = () => {
                 .then(returnedPerson => {
                     setPersons(persons.map(person => 
                        person.id !== samePersonWithDiffNo.id ? person : returnedPerson))
+                    setNotification(`'${returnedPerson.number}' was successfully updated for Person  '${returnedPerson.name}'`)
+                    setTimeout(() => {
+                        setNotification(null)
+                    }, 5000)   
                 })
                 .catch(error => {
-                    alert(`The person '${samePersonWithDiffNo.name}' was already deleted from server`)
+                    alert(`The person ${samePersonWithDiffNo.name}' was already deleted from server`)
                     setPersons(persons.filter(n =>
                        n.id !== samePersonWithDiffNo.id))
                 })
@@ -103,6 +108,10 @@ const App = () => {
          .create(nameObject)
          .then(returnedPerson => {
              setPersons(persons.concat(returnedPerson));
+             setNotification(`Person '${returnedPerson.name}' was successfully added to phonebook`)
+             setTimeout(() => {
+                 setNotification(null)
+             }, 5000)
          })
      }
       setNewName("");
@@ -128,6 +137,7 @@ const App = () => {
  return(
      <div>
          <h2>Phonebook</h2>
+         <Notification message= {notification} />
          <Filter text= "Filter names with: " value= {filteredName} onChange= {handleNameFilter} />
          <h3>Add a new</h3>
          <PersonForm addName= {addName} text1= "name: " value1= {newName} onChange1= {handleNameChange} text2= "number: " value2= {newNumber} onChange2= {handleNumberChange} />
