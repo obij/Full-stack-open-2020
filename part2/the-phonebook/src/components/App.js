@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from '../components/Filter'
 import PersonForm from '../components/PersonForm'
 import Persons from '../components/Persons'
-import noteService from '../services/notes'
+import personService from '../services/persons'
 import Notification from '../components/Notification'
 import ErrorNotification from './ErrorNotification'
 
@@ -19,7 +19,7 @@ const App = () => {
   
   useEffect(() =>{
       //console.log('effect')
-      noteService
+      personService
           .getAll()
           .then(initialPersons => {
               //console.log('promise fulfilled');
@@ -87,7 +87,7 @@ const App = () => {
         if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
             const samePersonWithDiffNo=  persons.find(p => p.name === nameObject.name && p.number !== nameObject.number);
             const changedPerson = {...samePersonWithDiffNo, number: nameObject.number};
-            noteService
+            personService
                 .update(samePersonWithDiffNo.id, changedPerson)
                 .then(returnedPerson => {
                     setPersons(persons.map(person => 
@@ -106,7 +106,7 @@ const App = () => {
 
       }else{
          // setPersons(persons.concat(nameObject));
-         noteService
+         personService
          .create(nameObject)
          .then(returnedPerson => {
              setPersons(persons.concat(returnedPerson));
@@ -115,6 +115,12 @@ const App = () => {
                  setNotification(null)
              }, 5000)
          })
+         .catch(error => {
+            // this is the way to access the error message
+            console.log(error)
+            //console.log(error.response.data)
+            //setErrorMessage(error)
+          })
      }
       setNewName("");
       setNewNumber("");
@@ -125,7 +131,7 @@ const App = () => {
       if(window.confirm(`Delete ${name}`)){
           const deletedPerson = persons.find(p => p.id=== id)
 
-          noteService
+          personService
              .updateDelete(id, deletedPerson)
              .then(returnedPerson => {
                  setPersons(persons.filter (person => person.id !== returnedPerson.id))
