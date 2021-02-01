@@ -31,18 +31,7 @@ blogSchema.set('toJSON', {
 //const Blog = mongoose.model('Blog', blogSchema)
 //onsole.log(process.env.MONGODB_URI)
 
-const  mongoUrl = process.env.MONGODB_URI
 
-console.log('connecting to',  mongoUrl)
-
-mongoose.connect( mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-  .then(result => {
-    console.log('result for mongoose connect is ', result)
-    console.log('connected to MongoDB')
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
 
 
 module.exports = mongoose.model('Blog', blogSchema)
