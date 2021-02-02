@@ -91,7 +91,54 @@ const mostBlogs = (arrBlogs) => {
   return maxBlogsObject
 }
 
+const getMostLikedAuthor= (blogObjectsArr) => {
+  let mostLikedAuthor = {
+    author: '',
+    likes: 0
+  }
+
+  blogObjectsArr.forEach((obj) => {
+    if(obj.likes > mostLikedAuthor.likes){
+      mostLikedAuthor = { ...obj }
+    }
+  })
+
+  return mostLikedAuthor
+}
+
+const mostLikes = (arrBlogs) => {
+  let arrBlogsCopy= [...arrBlogs]
+
+  arrBlogsCopy.forEach((obj) => {
+    delete obj.title
+    delete obj.url
+    delete obj._id
+    delete obj.__v
+    obj.status= false
+    obj.status2= false
+  })
+
+  arrBlogsCopy.forEach((obj) => {
+    obj.status = true
+    arrBlogsCopy.forEach((obj2) => {
+      if(obj2.status === false && obj2.author === obj.author){
+        obj.likes = obj.likes + obj2.likes
+        obj2.status= true
+        obj2.status2 = true
+      }
+    })
+  })
+
+  const filteredArrBlogs = arrBlogsCopy.filter((obj) => obj.status2 === false)
+
+  let mostLikedBlogsAuthor = getMostLikedAuthor(filteredArrBlogs)
+
+  delete mostLikedBlogsAuthor.status
+  delete mostLikedBlogsAuthor.status2
+  return mostLikedBlogsAuthor
+}
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
 
