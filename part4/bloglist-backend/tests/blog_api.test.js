@@ -1,9 +1,20 @@
 const mongoose = require('mongoose')
+const helper= require('./test_helper')
 const supertest = require('supertest')
 const app = require('../app')
 
 const api = supertest(app)
+const Blog= require('../models/blog')
 //jest.useFakeTimers()
+
+beforeEach(async () => {
+  await Blog.deleteMany({})
+
+  let blogObject= new Blog(helper.initialBlogs[0])
+  await blogObject.save()
+  blogObject= new Blog(helper.initialBlogs[1])
+  await blogObject.save()
+})
 
 test('blogs are returned as json', async () => {
   await api
@@ -11,6 +22,28 @@ test('blogs are returned as json', async () => {
     .expect(200)
     .expect('Content-Type', /application\/json/)
 })
+
+test('a valid blog can be added', async () => {
+  const newBlog= {
+    title: 'English lit blog',
+    author: 'Johnny English',
+    url: 'www.englishlitblog.com',
+    likes: 5
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd= await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+
+  const titles= blogsAtEnd.map(b => b.title)
+  expect(titles).toContain('English lit blog')
+})
+
 
 test('Any added valid blog has a valid id', async () => {
   const newBlog = {
@@ -36,10 +69,11 @@ test('Any added valid blog has a valid id', async () => {
   expect(expectedId).toBeDefined()
 })
 
+
 afterAll(() => {
   mongoose.connection.close()
 })
 
-//jest -t 'blog_api.test'
+
 //npm test -- tests/blog_api.test.js
 //npm test -- -t 'Any added valid blog has a valid id'
