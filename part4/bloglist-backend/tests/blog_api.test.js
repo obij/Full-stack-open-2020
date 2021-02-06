@@ -69,6 +69,24 @@ test('Any added valid blog has a valid id', async () => {
   expect(expectedId).toBeDefined()
 })
 
+test('no likes defaults to 0', async () => {
+  const newBlog = {
+    title: 'Gentlemen Blog',
+    author: 'William Forbes',
+    url: 'www.gentlemenblog.com'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd= await helper.blogsInDb()
+
+  const likes= blogsAtEnd.map(b => b.likes)
+  expect(likes).toContain(0)
+})
 
 afterAll(() => {
   mongoose.connection.close()
