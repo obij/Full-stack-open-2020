@@ -88,6 +88,18 @@ test('no likes defaults to 0', async () => {
   expect(likes).toContain(0)
 })
 
+test('no title and no url result in bad request', async () => {
+  const newBlog ={
+    author: 'Sidney Sheldon',
+    likes: 2
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
