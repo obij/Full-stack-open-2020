@@ -105,7 +105,7 @@ describe('deletion of a blog', () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
-    console.log('blogToDelete is ', blogToDelete)
+    //console.log('blogToDelete is ', blogToDelete)
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
@@ -120,6 +120,26 @@ describe('deletion of a blog', () => {
     const titles = blogsAtEnd.map(r => r.title)
 
     expect(titles).not.toContain(blogToDelete.title)
+  })
+})
+
+describe('update a blog', () => {
+  test('verifies successful update of blog', async () => {
+    const updatedLikes= {
+      likes: 60
+    }
+
+    const blogsAtStart= await helper.blogsInDb()
+    const blogToUpdate= blogsAtStart[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedLikes)
+      .expect(200)
+
+    const blogsAtEnd= await helper.blogsInDb()
+    const likes= blogsAtEnd.map(b => b.likes)
+    expect(likes).toContain(60)
   })
 })
 
