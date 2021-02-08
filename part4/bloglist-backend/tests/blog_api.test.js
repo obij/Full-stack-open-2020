@@ -5,6 +5,8 @@ const app = require('../app')
 
 const api = supertest(app)
 const Blog= require('../models/blog')
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
 //jest.useFakeTimers()
 
 beforeEach(async () => {
@@ -141,6 +143,40 @@ describe('update a blog', () => {
     const likes= blogsAtEnd.map(b => b.likes)
     expect(likes).toContain(60)
   })
+})
+
+describe('when there is initially one user in db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  test('invalid users not created and suitable status code and error message returned', async() => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser= {
+      userName: 'ml',
+      name: 'Matti Luukkainen',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+
+    const usersAtEnd= await helper.usersInDb()
+    expect (usersAtEnd).toHaveLength(usersAtStart.length)
+
+    const usernames= usersAtEnd.map(u => u.username)
+    expect(usernames).not.toContain(newUser.userName)
+
+  })
+
 })
 
 afterAll(() => {
