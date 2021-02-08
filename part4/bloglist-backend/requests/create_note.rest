@@ -19,3 +19,16 @@ content-type: application/json
 {
     "likes": 40
 }
+
+###
+POST http://localhost:3003/api/users/
+content-type: application/json
+
+{
+  "username": "obij",
+  "password": "STACKoverflow*21",
+  "name": "Obinna Okafor"
+}
+
+###
+GET http://localhost:3003/api/users/
