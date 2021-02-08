@@ -59,12 +59,13 @@ content-type: application/json
 ###
 POST http://localhost:3003/api/blogs
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9iaWoiLCJpZCI6IjYwMjBkYTc4YmI4M2YzMWU1MDJmOWI3NiIsImlhdCI6MTYxMjgwNTMyMX0.0PEoGUWL53mv264hOUTCDhqRiIs0yfFRJrtZP8wTork
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9iaWoiLCJpZCI6IjYwMjBkYTc4YmI4M2YzMWU1MDJmOWI3NiIsImlhdCI6MTYxMjgxMTI5N30.JXzsKeUbXGCoqhFCSi6y1Mr-kfKbeXDjuiqkosLBpqo
+
 
 {
-  "title": "Tailoring Blog",
-  "author": "Chijioke Ogbonna",
-  "url": "www.tailoringblog.com",
-  "likes": 43
+  "title": "Farming Blog",
+  "author": "Ndubuisi Okonkwo",
+  "url": "www.farmingblog.com",
+  "likes": 20
   
 }
