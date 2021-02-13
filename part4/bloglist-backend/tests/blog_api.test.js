@@ -5,10 +5,12 @@ const app = require('../app')
 
 const api = supertest(app)
 const Blog= require('../models/blog')
-const bcrypt = require('bcrypt')
+//const bcrypt = require('bcrypt')
 const User = require('../models/user')
 //jest.useFakeTimers()
 
+let token= null
+//let savedToken= null
 beforeEach(async () => {
   await Blog.deleteMany({})
 
@@ -16,6 +18,21 @@ beforeEach(async () => {
   await blogObject.save()
   blogObject= new Blog(helper.initialBlogs[1])
   await blogObject.save()
+
+  await User.deleteMany({})
+  //const passwordHash= await bcrypt.hash('sekret', 10)
+  //const user= new User({ username: 'root', passwordHash })
+  //await user.save
+  await api
+    .post('/api/users')
+    .send({ username:'Jhn', password:'sekret', name: 'John' })
+
+
+  //user logs in to generate a token
+  const response= await api.post('/api/login').send({ username: 'Jhn', password: 'sekret' })
+  token= response.body.token
+  //console.log('token is', token)
+  //savedToken= token
 })
 
 test('blogs are returned as json', async () => {
@@ -23,9 +40,13 @@ test('blogs are returned as json', async () => {
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
+
 })
 
+
+
 test('a valid blog can be added', async () => {
+  //console.log('token is', token)
   const newBlog= {
     title: 'English lit blog',
     author: 'Johnny English',
@@ -35,8 +56,9 @@ test('a valid blog can be added', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
-    .expect(201)
+    //.expect(201)
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd= await helper.blogsInDb()
@@ -48,6 +70,7 @@ test('a valid blog can be added', async () => {
 
 
 test('Any added valid blog has a valid id', async () => {
+  //console.log('token is', token)
   const newBlog = {
     title: 'The new times Blog',
     author: 'Ben Richard',
@@ -59,6 +82,7 @@ test('Any added valid blog has a valid id', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     //.expect(200)
     .expect('Content-Type', /application\/json/)
@@ -72,6 +96,7 @@ test('Any added valid blog has a valid id', async () => {
 })
 
 test('no likes defaults to 0', async () => {
+  //console.log('token is', token)
   const newBlog = {
     title: 'Gentlemen Blog',
     author: 'William Forbes',
@@ -80,8 +105,9 @@ test('no likes defaults to 0', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
-    .expect(201)
+    //.expect(201)
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd= await helper.blogsInDb()
@@ -91,6 +117,7 @@ test('no likes defaults to 0', async () => {
 })
 
 test('no title and no url result in bad request', async () => {
+  //console.log('token is', token)
   const newBlog ={
     author: 'Sidney Sheldon',
     likes: 2
@@ -98,12 +125,34 @@ test('no title and no url result in bad request', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(400)
 })
 
+test('unauthorized users cannot create blogs', async () => {
+  //console.log('token is', token)
+  const newBlog= {
+    title: 'Fresh blog',
+    author: 'Obinna Okafor',
+    url: 'www.testurl.com'
+  }
+
+  token= null
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .send(newBlog)
+    .expect(401)
+
+  let blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+//re-initialize token
+//token= savedToken
+
 describe('deletion of a blog', () => {
-  test('succeeds with status code 204 if id is valid', async () => {
+  test('successfully deletes if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
@@ -111,12 +160,18 @@ describe('deletion of a blog', () => {
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204)
+      .set('Authorization', `Bearer ${token}`)
+      //.expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
 
+    console.log('blogsAtEnd has length ', blogsAtEnd.length)
+    //console.log('helper.initialBlogs has length', helper.initialBlogs.length)
+    console.log('blogsAtStart has length ', blogsAtStart.length)
+
+
     expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
+      blogsAtStart.length - 1
     )
 
     const titles = blogsAtEnd.map(r => r.title)
@@ -145,14 +200,18 @@ describe('update a blog', () => {
   })
 })
 
-describe('when there is initially one user in db', () => {
+describe('When there is initially one user in db', () => {
+  let token = null
   beforeEach(async () => {
     await User.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
+    await api
+      .post('/api/users')
+      .send({ username: 'Jhn', password: 'sekret', name: 'john' })
 
-    await user.save()
+    //const response = await api.post('/api/login').setEncoding({ username: 'Jhn', password: 'sekret' })
+    const response= await api.post('/api/login').send({ username: 'Jhn', password: 'sekret' })
+    token= response.body.token
   })
 
   test('invalid users not created and suitable status code and error message returned', async() => {
@@ -166,6 +225,7 @@ describe('when there is initially one user in db', () => {
 
     await api
       .post('/api/users')
+      .set('Authorization', `Bearer ${token}`)
       .send(newUser)
       .expect(400)
 
@@ -176,7 +236,6 @@ describe('when there is initially one user in db', () => {
     expect(usernames).not.toContain(newUser.userName)
 
   })
-
 })
 
 afterAll(() => {

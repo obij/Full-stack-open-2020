@@ -53,7 +53,8 @@ blogsRouter.post('/', async (request, response) => {
   user.blogs= user.blogs.concat(savedBlog._id)
   await user.save()
 
-  response.json(savedBlog)
+  response.json(savedBlog).status(201)
+  //response.status(204).end()
 })
 
 
@@ -79,8 +80,8 @@ blogsRouter.delete('/:id', async(request, response) => {
 
 
   if (blog.user.toString() === user._id.toString()) {
-    console.log('blog.user.toString() is ', blog.user.toString)
-    console.log('user._id.toString() is', user._id.toString())
+    //console.log('blog.user.toString() is ', blog.user.toString)
+    //console.log('user._id.toString() is', user._id.toString())
     await Blog.findByIdAndRemove(id)
     response.status(204).end()
   } else {
