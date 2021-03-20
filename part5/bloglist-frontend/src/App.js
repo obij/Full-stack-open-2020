@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import Notification from './components/Notification'
 import loginService from './services/login'
+import Form4Blog from './components/Form4Blog'
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -52,9 +54,33 @@ const App = () => {
     }
   }
 
-  const handleClick = () => {
+  const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
+  }
+
+  const addBlog= async(blogObj) => {
+    try{
+      //check if all necessary fields are filled
+      if(!blogObj.title || !blogObj.author || !blogObj.url){
+        setErrorMessage({error: 'Please input all the required fields'})
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        return
+      }
+      
+      //Add the new blog to the database
+      await blogService.create(blogObj)
+      console.log("blogObj is ", blogObj)
+      const updatedBlogs= await blogService.getAll()
+
+      //update the react state with the new blog
+      setBlogs(updatedBlogs)
+
+    }catch(err){
+      console.error(err)
+    }
   }
 
   if(user === null){
@@ -90,11 +116,12 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} />
-      <button onClick = {handleClick} >
+      <h2>blogs</h2>
+      <p>{user.name} logged in</p>
+      <button onClick = {handleLogout} >
         log Out
       </button>
-      <p>{user.name} logged in</p>
-      <h2>blogs</h2>
+      <Form4Blog addBlog= {addBlog}/>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
