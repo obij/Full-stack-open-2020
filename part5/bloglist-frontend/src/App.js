@@ -63,7 +63,7 @@ const App = () => {
     try{
       //check if all necessary fields are filled
       if(!blogObj.title || !blogObj.author || !blogObj.url){
-        setErrorMessage({error: 'Please input all the required fields'})
+        setErrorMessage('Error, Please input all the required fields')
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
