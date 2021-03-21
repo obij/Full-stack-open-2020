@@ -53,7 +53,7 @@ const Form4Blog = ({addBlog}) => {
       <InputBlogField type= "title" name= "title" id= "title" value= {inputTitle || ''} onChange= {handleInputTitleChange} />
       <label htmlFor = "author">author</label>
       <InputBlogField type= "author" name= "author" id= "author" value= {inputAuthor || '' } onChange= {handleInputAuthorChange} />
-      <label For= "url">url</label>
+      <label htmlFor= "url">url</label>
       <InputBlogField type= "url" name="url" id ="url" value= {inputUrl || ''} onChange= {handleInputUrlChange}/>
       <Button type = "submit" text= "create" />
     </form>

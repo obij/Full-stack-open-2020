@@ -12,6 +12,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
+  const [addedBlogMessage, setAddedBlogMessage]= useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -47,7 +48,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -72,11 +73,19 @@ const App = () => {
       
       //Add the new blog to the database
       await blogService.create(blogObj)
-      console.log("blogObj is ", blogObj)
+      //console.log("blogObj is ", blogObj)
       const updatedBlogs= await blogService.getAll()
 
       //update the react state with the new blog
       setBlogs(updatedBlogs)
+      
+      //console.log("A new blog was added")  
+
+      setAddedBlogMessage(`a new blog ${blogObj.title} by ${blogObj.author} added`)
+      //console.log("addedBlogMessage is", addedBlogMessage)
+      setTimeout(() => {
+        setAddedBlogMessage(null)
+      }, 5000)
 
     }catch(err){
       console.error(err)
@@ -116,6 +125,7 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} />
+      <Notification message= {addedBlogMessage} />
       <h2>blogs</h2>
       <p>{user.name} logged in</p>
       <button onClick = {handleLogout} >
