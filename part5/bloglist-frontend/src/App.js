@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import loginService from './services/login'
 import Form4Blog from './components/Form4Blog'
+import Togglable from './components/Togglable'
 
 
 const App = () => {
@@ -92,6 +93,12 @@ const App = () => {
     }
   }
 
+  const form4Blog = () => (
+    <Togglable buttonLabel = 'new note'>
+      <Form4Blog addBlog= {addBlog} />
+    </Togglable>
+  )
+
   if(user === null){
     return(
       <div>
@@ -131,7 +138,7 @@ const App = () => {
       <button onClick = {handleLogout} >
         log Out
       </button>
-      <Form4Blog addBlog= {addBlog}/>
+      {form4Blog()}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
