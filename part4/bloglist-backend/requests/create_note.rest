@@ -72,3 +72,24 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9ia
 ###
 DELETE http://localhost:3003/api/blogs/602768ea8980031f2c346417
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9iaWoiLCJpZCI6IjYwMjc1NzQzODk4MDAzMWYyYzM0NjQxNSIsImlhdCI6MTYxMzE5NTMwOX0.r0H8-SQmlWQ18XKY3r8Nv3oktk15q_TzJGHWnqxMwEo
+
+
+###
+POST http://localhost:3001/api/users/
+content-type: application/json
+
+{
+  "username": "kennyg",
+  "password": "ATTain*21",
+  "name": "Kenneth Gerald"
+}
+
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+  "username": "kennyg",
+  "password": "ATTain*21"
+}

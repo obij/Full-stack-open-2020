@@ -14,6 +14,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [addedBlogMessage, setAddedBlogMessage]= useState(null)
+  const blogDetailsArr = []
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -71,6 +72,9 @@ const App = () => {
         }, 5000)
         return
       }
+
+      //save the blog details to  blogDetailsArr
+      blogDetailsArr.push(blogObj)
       
       //Add the new blog to the database
       await blogService.create(blogObj)
@@ -140,7 +144,7 @@ const App = () => {
       </button>
       {form4Blog()}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} blogDetailsArr= {blogDetailsArr} user= {user}/>
       )}
     </div>
   )
