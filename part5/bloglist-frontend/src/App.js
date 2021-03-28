@@ -5,6 +5,7 @@ import Notification from './components/Notification'
 import loginService from './services/login'
 import Form4Blog from './components/Form4Blog'
 import Togglable from './components/Togglable'
+//import blogs from './services/blogs'
 
 
 const App = () => {
@@ -14,7 +15,8 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [addedBlogMessage, setAddedBlogMessage]= useState(null)
-  const blogDetailsArr = []
+  //const blogDetailsArr = []
+  const postedByArr= [] 
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -73,8 +75,10 @@ const App = () => {
         return
       }
 
+      console.log("blogObj is ", blogObj)
       //save the blog details to  blogDetailsArr
-      blogDetailsArr.push(blogObj)
+      //blogDetailsArr.push(blogObj)
+      //console.log("blogDetailsArr at addBlog is", blogDetailsArr)
       
       //Add the new blog to the database
       await blogService.create(blogObj)
@@ -96,12 +100,62 @@ const App = () => {
       console.error(err)
     }
   }
+  //console.log("blogDetailsArr after addBlog is", blogDetailsArr)
+  const addLike = async(id, blogObj) => {
+    try{
+      //use blogServive.update to add like to blog and store in db
+      await blogService.update(id, blogObj)
+
+      const blogUpdated = {
+        ...blogObj,
+        id,
+      }
+
+      //next update blogs in the state
+      const updatedBlogs= blogs.map((blog) => (blog.id !== id ? blog : blogUpdated))
+      setBlogs(updatedBlogs)
+
+    }catch(err){
+      console.error(err)
+    }
+  }
 
   const form4Blog = () => (
     <Togglable buttonLabel = 'new note'>
       <Form4Blog addBlog= {addBlog} />
     </Togglable>
   )
+
+
+  function compare_Likes(a, b){
+    //a should come before b in the sorted order
+    if(a.likes < b.likes){
+      return -1
+    //a should come after b in the sorted ofder
+    }else if(a.likes > b.likes){
+      return 1
+    //a and b are the same  
+    }else{
+      return 0
+    }
+  }
+
+  const deleteBlog = async(id) => {
+    try{
+      const blog= blogs.filter((blogObj) => blogObj.id === id)
+
+      if(window.confirm(`Remove ${blog[0].title} by ${blog[0].author}`)){
+        //remove blog from database
+        await blogService.deleteBlog(id)
+
+        //next update state
+        setBlogs(blogs.filter((blogObj) => blogObj.id !== id))
+      }
+
+    }catch(err){
+      console.error(err)
+    }
+  }
 
   if(user === null){
     return(
@@ -133,6 +187,8 @@ const App = () => {
     )
   }
 
+  
+
   return (
     <div>
       <Notification message={errorMessage} />
@@ -143,11 +199,13 @@ const App = () => {
         log Out
       </button>
       {form4Blog()}
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} blogDetailsArr= {blogDetailsArr} user= {user}/>
+      {blogs.sort(compare_Likes).map(blog =>
+        <Blog key={blog.id} blog={blog}  user= {user} addLike= {addLike} deleteBlog ={deleteBlog} postedByArr ={postedByArr}/>
       )}
     </div>
   )
 }
 
 export default App
+
+

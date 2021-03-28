@@ -28,11 +28,13 @@ const Form4Blog = ({addBlog}) => {
             const title= inputTitle
             const author= inputAuthor
             const url = inputUrl
+            const likes= 0
 
             const blog= {
                 title,
                 author,
-                url
+                url,
+                likes
             }
 
             addBlog(blog)
