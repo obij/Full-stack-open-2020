@@ -42,7 +42,7 @@ const App = () => {
       })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-
+      // eslint-disable-next-line no-mixed-spaces-and-tabs
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')

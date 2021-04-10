@@ -1,4 +1,3 @@
-/* eslint-disable */
 /* eslint-env node */
 module.exports = {
     "env": {
@@ -8,7 +7,7 @@ module.exports = {
     },
     "extends": [ 
         "eslint:recommended",
-        "plugin:react/recommended",
+        "plugin:react/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {

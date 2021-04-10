@@ -8,5 +8,4 @@ const Button2 = ({ text, onClick }) => {
   )
 }
 
-// eslint-disable-next-line semi
 export default Button2
