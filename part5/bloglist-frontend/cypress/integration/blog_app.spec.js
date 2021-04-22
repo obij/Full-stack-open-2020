@@ -5,6 +5,8 @@ describe('Blog app', function () {
   })
 
   it('Login form is shown', function () {
+    cy.get('#Username')
+    cy.get('#Password')
     cy.contains('login')
   })
 })
