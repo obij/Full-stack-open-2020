@@ -50,29 +50,32 @@ const Form4Blog = ({ addBlog }) => {
 
   return (
     <form onSubmit={handleCreateBlog}>
-      <label htmlFor="title">title</label>
       <InputBlogField
         type="title"
         name="title"
         id="title"
         value={inputTitle || ''}
         onChange={handleInputTitleChange}
+        label="title"
+        htmlFor="title"
       />
-      <label htmlFor="author">author</label>
       <InputBlogField
         type="author"
         name="author"
         id="author"
         value={inputAuthor || ''}
         onChange={handleInputAuthorChange}
+        label="author"
+        htmlFor="author"
       />
-      <label htmlFor="url">url</label>
       <InputBlogField
         type="url"
         name="url"
         id="url"
         value={inputUrl || ''}
         onChange={handleInputUrlChange}
+        label="url"
+        htmlFor="url"
       />
       <Button type="submit" text="create" />
     </form>
