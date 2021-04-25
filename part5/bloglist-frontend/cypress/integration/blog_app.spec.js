@@ -37,4 +37,26 @@ describe('Blog app', function () {
     })
   })
 
+  describe('When logged in', function() {
+    beforeEach(function() {
+      // log in user here
+      cy.get('#username').type('mluukkai')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+    })
+
+    it.only('A blog can be created', function() {
+      // ...
+      cy.get('#hide-button').click()
+
+      cy.get('#title').type('Martial arts blog')
+      cy.get('#author').type('Bruce Lee')
+      cy.get('#url').type('https://martialartsblog.com')
+      cy.contains('create').click()
+
+      cy.contains('Martial arts blog Bruce Lee')
+    })
+  })
+
 })
+

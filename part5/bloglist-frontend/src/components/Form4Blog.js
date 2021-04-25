@@ -77,7 +77,7 @@ const Form4Blog = ({ addBlog }) => {
         label="url"
         htmlFor="url"
       />
-      <Button type="submit" text="create" />
+      <Button id= "form-button" type="submit" text="create" />
     </form>
   )
 }
