@@ -9,6 +9,13 @@ describe('Blog app', function () {
     }
     cy.request('POST', 'http://localhost:3001/api/users/', user) 
 
+    const user2= {
+      name: 'Obi Jude',
+      username: 'obij',
+      password: 'amazing'
+    }
+    cy.request('POST', 'http://localhost:3001/api/users/', user2)
+
     cy.visit('http://localhost:3000')
   })
 
@@ -65,7 +72,7 @@ describe('Blog app', function () {
       cy.get('#login-button').click()
     })
 
-    it.only('User can like a blog', function() {
+    it('User can like a blog', function() {
       cy.get('#hide-button').click()
 
       cy.get('#title').type('Cypress blog')
@@ -78,6 +85,46 @@ describe('Blog app', function () {
 
       cy.contains(1)
     })
+  })
+  describe('Logged in first user creates a blog', function() {
+    beforeEach(function () {
+      cy.get('#username').type('mluukkai')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+
+      cy.get('#hide-button').click()
+
+      cy.get('#title').type('Cypress blog')
+      cy.get('#author').type('Cypress')
+      cy.get('#url').type('https://cypressblog.com')
+      cy.contains('create').click()
+
+      cy.contains('log Out').click()
+    })
+
+    it('other users cannot delete another user blog', function () {
+      cy.get('#username').type('obij')
+      cy.get('#password').type('amazing')
+      cy.get('#login-button').click()
+
+      cy.contains('view').click()
+    
+      
+      cy.contains('remove').should('not.exist')
+      cy.contains('Cypress blog Cypress')
+    })
+
+    it.only('User can delete his own blog', function () {
+      cy.get('#username').type('mluukkai')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+
+      cy.contains('view').click()
+      cy.contains('remove').click()
+
+      cy.contains('Cypress blog Cypress').should('not.exist')
+    })
+
   })
 
 })
