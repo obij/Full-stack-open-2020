@@ -45,7 +45,7 @@ describe('Blog app', function () {
       cy.get('#login-button').click()
     })
 
-    it.only('A blog can be created', function() {
+    it('A blog can be created', function() {
       // ...
       cy.get('#hide-button').click()
 
@@ -55,6 +55,28 @@ describe('Blog app', function () {
       cy.contains('create').click()
 
       cy.contains('Martial arts blog Bruce Lee')
+    })
+  })
+
+  describe('When logged in 2', function() {
+    beforeEach(function () {
+      cy.get('#username').type('mluukkai')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+    })
+
+    it.only('User can like a blog', function() {
+      cy.get('#hide-button').click()
+
+      cy.get('#title').type('Cypress blog')
+      cy.get('#author').type('Cypress')
+      cy.get('#url').type('https://cypressblog.com')
+      cy.contains('create').click()
+
+      cy.contains('view').click()
+      cy.contains('like').click()
+
+      cy.contains(1)
     })
   })
 
