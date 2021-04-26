@@ -11,7 +11,7 @@ const BlogDetails = ({ blog, user, updateLike, removeBlog, postedByArr }) => {
   return (
     <div>
       <div>{blog.url}</div>
-      likes {blog.likes} <Button2 text="like" onClick={updateLike} />
+      <span>likes</span> <span data-likes-id= "likes">{blog.likes}</span> <Button2 data-likeButton-id= "like"  text="like" onClick={updateLike} />
       {user.name}
       {postedByArr.includes(blog.title) === true ? (
         <Button2 text="remove" onClick={removeBlog} />

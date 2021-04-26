@@ -47,9 +47,7 @@ describe('Blog app', function () {
   describe('When logged in', function() {
     beforeEach(function() {
       // log in user here
-      cy.get('#username').type('mluukkai')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      cy.login({ username: 'mluukkai', password: 'salainen' })
     })
 
     it('A blog can be created', function() {
@@ -67,9 +65,7 @@ describe('Blog app', function () {
 
   describe('When logged in 2', function() {
     beforeEach(function () {
-      cy.get('#username').type('mluukkai')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      cy.login({ username: 'mluukkai', password: 'salainen' })
     })
 
     it('User can like a blog', function() {
@@ -86,11 +82,10 @@ describe('Blog app', function () {
       cy.contains(1)
     })
   })
+
   describe('Logged in first user creates a blog', function() {
     beforeEach(function () {
-      cy.get('#username').type('mluukkai')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      cy.login({ username: 'mluukkai', password: 'salainen' })
 
       cy.get('#hide-button').click()
 
@@ -114,7 +109,7 @@ describe('Blog app', function () {
       cy.contains('Cypress blog Cypress')
     })
 
-    it.only('User can delete his own blog', function () {
+    it('User can delete his own blog', function () {
       cy.get('#username').type('mluukkai')
       cy.get('#password').type('salainen')
       cy.get('#login-button').click()
@@ -127,5 +122,36 @@ describe('Blog app', function () {
 
   })
 
+  describe('Multiple blogs with different likes', function() {
+    beforeEach(function() {
+      cy.generateBlog({
+        title: 'First Blog by Cypress',
+        author: 'Cypress',
+        url: 'https://www.cypressblog.com',
+        likes: 14,
+      })
+      cy.generateBlog({
+        title: 'Second blog by Cypress',
+        author: 'Cypress',
+        url: 'https://www.cypressblog.com',
+        likes: 2,
+      })
+      cy.generateBlog({
+        title: 'Third blog by Cypress',
+        author: 'Cypress',
+        url: 'https://www.cypressblog.com',
+        likes: 4,
+      })
+    })
+
+    it.only('Selection of blogs in descending order, from blog with most likes to blog with least likes', function() {
+      cy.get('[data-blog-id = "blog"]').then(($blogs) => {
+        expect($blogs.find('[data-likes-id = "likes"]')[0]).equal(14)
+
+        expect($blogs.find('[data-likes-id = "likes"]')[1]).equal(4)
+        expect($blogs.find('[data-likes-id = "likes"]')[2]).equal(2)
+      })
+    })
+  })
 })
 

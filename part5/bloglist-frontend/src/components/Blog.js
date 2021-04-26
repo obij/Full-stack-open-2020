@@ -46,11 +46,11 @@ const Blog = ({ blog, user, addLike, deleteBlog, postedByArr }) => {
   }
 
   return (
-    <div style={blogStyle} className="blog">
+    <div style={blogStyle} data-blog-id= "blog" className="blog">
       {showBlogDetails === false ? (
         <span>
           {blog.title} {blog.author}
-          <button onClick={() => setShowBlogDetails(true)}>view</button>
+          <button data-viewButton-id= "view" onClick={() => setShowBlogDetails(true)}>view</button>
         </span>
       ) : (
         <div>

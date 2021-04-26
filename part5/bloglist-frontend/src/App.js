@@ -124,18 +124,26 @@ const App = () => {
     </Togglable>
   )
 
-  function compare_Likes(a, b) {
-    //a should come before b in the sorted order
-    if (a.likes < b.likes) {
-      return -1
-      //a should come after b in the sorted ofder
-    } else if (a.likes > b.likes) {
-      return 1
-      //a and b are the same
-    } else {
-      return 0
+ 
+
+  function compare_Likes(property,order) {
+    var sort_order = 1;
+    if(order === "desc"){
+        sort_order = -1;
     }
-  }
+    return function (a, b){
+        // a should come before b in the sorted order
+        if(a[property] < b[property]){
+                return -1 * sort_order;
+        // a should come after b in the sorted order
+        }else if(a[property] > b[property]){
+                return 1 * sort_order;
+        // a and b are the same
+        }else{
+                return 0 * sort_order;
+        }
+    }
+}
 
   const deleteBlog = async (id) => {
     try {
@@ -193,7 +201,7 @@ const App = () => {
       <p>{user.name} logged in</p>
       <button onClick={handleLogout}>log Out</button>
       {form4Blog()}
-      {blogs.sort(compare_Likes).map((blog) => (
+      {blogs.sort(compare_Likes("likes", "desc")).map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
