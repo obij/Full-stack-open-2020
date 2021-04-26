@@ -47,7 +47,9 @@ describe('Blog app', function () {
   describe('When logged in', function() {
     beforeEach(function() {
       // log in user here
-      cy.login({ username: 'mluukkai', password: 'salainen' })
+      cy.get('#username').type('mluukkai')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
     })
 
     it('A blog can be created', function() {
@@ -65,7 +67,9 @@ describe('Blog app', function () {
 
   describe('When logged in 2', function() {
     beforeEach(function () {
-      cy.login({ username: 'mluukkai', password: 'salainen' })
+      cy.get('#username').type('mluukkai')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
     })
 
     it('User can like a blog', function() {
@@ -85,7 +89,9 @@ describe('Blog app', function () {
 
   describe('Logged in first user creates a blog', function() {
     beforeEach(function () {
-      cy.login({ username: 'mluukkai', password: 'salainen' })
+      cy.get('#username').type('mluukkai')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
 
       cy.get('#hide-button').click()
 
