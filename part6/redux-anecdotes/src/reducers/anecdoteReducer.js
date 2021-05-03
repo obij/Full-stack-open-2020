@@ -33,6 +33,9 @@ const reducer = (state = initialState, action) => {
 
       return state.map(anecdote2 => anecdote2.id !== id ? anecdote2 : upvotedAnecdote)
     }
+    case 'NEW_ANECDOTE': {
+      return state.concat(action.data)
+    }
     // eslint-disable-next-line no-fallthrough
     default:
       return state
@@ -45,4 +48,16 @@ export const voteAnecdote = (id) => {
     data: id
   }
 }
+
+export const createAnecdote = (anecdote) => {
+  return{
+    type: 'NEW_ANECDOTE',
+    data: {
+      content: anecdote,
+      id: getId(),
+      votes: 0
+    }
+  }
+}
+
 export default reducer
