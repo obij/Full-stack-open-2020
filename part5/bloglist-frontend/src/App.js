@@ -143,7 +143,7 @@ const App = () => {
                 return 0 * sort_order;
         }
     }
-}
+  }
 
   const deleteBlog = async (id) => {
     try {

@@ -17,7 +17,28 @@ const asObject = (anecdote) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+function compare_votes(property,order) {
+  var sort_order = 1;
+  if(order === "desc"){
+      sort_order = -1;
+  }
+  return function (a, b){
+      // a should come before b in the sorted order
+      if(a[property] < b[property]){
+              return -1 * sort_order;
+      // a should come after b in the sorted order
+      }else if(a[property] > b[property]){
+              return 1 * sort_order;
+      // a and b are the same
+      }else{
+              return 0 * sort_order;
+      }
+  }
+}
+
+//console.log("anecdotesAtStart is ", anecdotesAtStart.sort(compare_votes("votes", "desc")))
+//const initialState = anecdotesAtStart.map(asObject)
+const initialState= anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
@@ -31,7 +52,10 @@ const reducer = (state = initialState, action) => {
       //console.log('votedAnecdote is',  votedAnecdote)
       //console.log('upvotedAnecdote is ', upvotedAnecdote)
 
-      return state.map(anecdote2 => anecdote2.id !== id ? anecdote2 : upvotedAnecdote)
+     const changedState= state.map(anecdote2 => anecdote2.id !== id ? anecdote2 : upvotedAnecdote)
+     const modifiedState=  changedState.sort(compare_votes("votes", "desc"))
+     console.log('modified state is ', modifiedState)
+     return modifiedState
     }
     case 'NEW_ANECDOTE': {
       return state.concat(action.data)
