@@ -40,7 +40,7 @@ function compare_votes(property,order) {
 //const initialState = anecdotesAtStart.map(asObject)
 const initialState= anecdotesAtStart.map(asObject)
 
-const anecdoteReducer = (state = initialState, action) => {
+const anecdoteReducer = (state =[], action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
@@ -61,6 +61,8 @@ const anecdoteReducer = (state = initialState, action) => {
     case 'NEW_ANECDOTE': {
       return state.concat(action.data)
     }
+    case 'INIT_ANECDOTES':
+      return action.data
     // eslint-disable-next-line no-fallthrough
     default:
       return state
@@ -83,6 +85,13 @@ export const createAnecdote = (anecdote) => {
       id: getId(),
       votes: 0
     }
+  }
+}
+
+export const initializeAnecdotes = (anecdotes) => {
+  return{
+    type: 'INIT_ANECDOTES',
+    data: anecdotes
   }
 }
 
