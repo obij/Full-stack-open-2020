@@ -14,6 +14,7 @@ const AnecdoteList = () => {
          return state.anecdotes.filter((anecdote) => anecdote.content.toLowerCase().includes(state.filter.toLowerCase()) )
      }
   })
+  console.log('anecdotes in anecdote list is ', anecdotes)
   const dispatch = useDispatch()
   
   const vote = (id) => {
