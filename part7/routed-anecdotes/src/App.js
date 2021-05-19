@@ -6,7 +6,7 @@ import {
   useHistory,
   useRouteMatch,
 } from "react-router-dom";
-
+import  { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -67,51 +67,43 @@ const Footer = () => (
   </div>
 );
 
+
+
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content= useField('content')
+  const author= useField('author')
+  const info= useField('info')
 
-  const history = useHistory()
-
+  const history= useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
-    //console.log('content is ', content)
-    //setContent('')
-    //console.log('content is ', content)
-    ///setAuthor('')
-    //setInfo('')
     history.push('/')
   }
 
-  return (
+  return(
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form  onSubmit={handleSubmit}>
         <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          content <input {...content} />
         </div>
         <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          author <input {...author} />
         </div>
         <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          url for more info <input {...info} />
         </div>
         <button>create</button>
       </form>
     </div>
   )
-
 }
 const Anecdote = ({anecdote})  => {
   return(
@@ -124,7 +116,7 @@ const Anecdote = ({anecdote})  => {
 }
 
 const Notification = ({notification}) => {
-  console.log('Notification message is  ', notification)
+  //console.log('Notification message is  ', notification)
   return (
     <div  >
       { notification }
