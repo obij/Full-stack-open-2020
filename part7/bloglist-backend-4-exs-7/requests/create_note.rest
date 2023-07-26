@@ -1,0 +1,128 @@
+POST http://localhost:3003/api/blogs/
+content-type: application/json
+
+{
+  "title": "Chris' blog",
+  "author": "Chris Dodd",
+  "url": "www.chrisblog.com",
+  "likes": 8
+}
+
+###
+DELETE http://localhost:3003/api/blogs/601f31000987f004184c29a0
+
+
+###
+PUT http://localhost:3003/api/blogs/6020021acac6a629b41e9d78
+content-type: application/json
+
+{
+    "likes": 40
+}
+
+###
+POST http://localhost:3001/api/users/
+content-type: application/json
+
+{
+  "username": "obij",
+  "password": "STACKoverflow*21",
+  "name": "Obinna Okafor"
+}
+
+###
+GET http://localhost:3003/api/users/
+
+###
+POST http://localhost:3003/api/blogs
+content-type: application/json
+
+
+{
+  "title": "Fine Arts Blog",
+  "author": "Chinedu Okeke",
+  "url": "www.fineartsblog.com",
+  "likes": 24
+  
+}
+
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+  "username": "obij",
+  "password": "STACKoverflow*21"
+}
+
+###
+POST http://localhost:3001/api/blogs
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9iaWoiLCJpZCI6IjY0OWYzZDM2MjU1NThkNjY4NDE5ZTc0MiIsImlhdCI6MTY4ODE1Nzg0M30.w5fHRb8calSewGSrpNGC6xM1VeTJiX-ZwYSWw54z8mA
+
+{
+  "title": "Car Racing Blog",
+  "author": "Luke Hamilton",
+  "url": "www.carracingblog.com",
+  "likes": 25
+  
+}
+
+###
+DELETE http://localhost:3001/api/blogs/64a86bd8d5d1b46c4c96d924
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm55ZyIsImlkIjoiNjRhMDEzMjUzZTA1Yzg4MGI0ZDU3MjRiIiwiaWF0IjoxNjg4OTM4OTQ4fQ.PMShK5SZ9kFe_TIf2qbS4ZShcUeVqy8MzwiTRNSUrWQ
+
+
+###
+POST http://localhost:3001/api/users/
+content-type: application/json
+
+{
+  "username": "kennyg",
+  "password": "ATTain*21",
+  "name": "Kenneth Gerald"
+}
+
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+  "username": "kennyg",
+  "password": "ATTain*21"
+}
+
+### 
+POST http://localhost:3001/api/testing/reset
+
+###
+GET http://localhost:3001/api/users/64a013253e05c880b4d5724b
+
+###
+GET http://localhost:3001/api/blogs/64a0798c3e05c880b4d5724d
+
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtlbm55ZyIsImlkIjoiNjRhMDEzMjUzZTA1Yzg4MGI0ZDU3MjRiIiwiaWF0IjoxNjkwMTQ4MjU0fQ.N7xNIog3bD38DQrIdFr1IscXm_Xml_UjZ8nShjpdP6g
+
+{
+  "title": "Eating blog",
+  "author": "Dwayne Johnson",
+  "url": "www.eating.com",
+  "likes": 25,
+  "comments": ["Wondefful eating blog"]
+  
+}
+
+
+###
+PUT   http://localhost:3001/api/blogs/64a081943e05c880b4d5724e/comments
+content-type: application/json
+
+{
+  "comments": ["Great wines!", "Great drinking styles"]
+}
